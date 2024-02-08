@@ -7,11 +7,12 @@ export function SignIn(){
 
 
   return (
-      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="flex flex-col justify-center px-6 py-12 lg:px-8 shadow-lg p-6 mb-6 bg-slate-200 rounded-md">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
             className="mx-auto h-10 w-auto"
-            src="https://raw.githubusercontent.com/libertas-cris/arquivos-salablack/main/Sem%20nome%20(170%20x%2040%20px).svg"
+            src="https://raw.githubusercontent.com/libertas-cris/arquivos-salablack/main/logo-salablack-front-removebg-preview.png"
             alt="Your Company"
           />
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
@@ -81,6 +82,7 @@ export function SignIn(){
             </a>
           </p>
         </div>
+      </div>
       </div>
   )
 }
