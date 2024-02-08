@@ -7,7 +7,7 @@ function AuthProvider({children}){
 
   function signOut(){
     localStorage.removeItem('@salablack:user');
-    localStorage.removeItem('@salablack:token');
+    localStorage.removeItem('@salablack:token'); //entender token como senha criptografada
   
     setData
   }
@@ -15,7 +15,7 @@ function AuthProvider({children}){
   async function signIn({email, password}){
 
     try {
-      const response = {data:{user: "math", token: 123456}};
+      const response = {data:{user: "math", token: 123456}}; //aqui vai ser a chamada da api
       const {user, token} = response.data;
 
       localStorage.setItem('@salablack:user',JSON.stringify(user));
