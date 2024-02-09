@@ -2,6 +2,7 @@ import { createContext, useState, useContext } from "react";
 
 export const AuthContext = createContext({});
 
+
 function AuthProvider({children}){
   const [data, setData] = useState({});
 
@@ -12,23 +13,37 @@ function AuthProvider({children}){
     setData
   }
 
-  async function signIn({email, password}){
+  function signIn({email, password}){
 
-    try {
-      const response = {data:{user: "math", token: 123456}}; //aqui vai ser a chamada da api
-      const {user, token} = response.data;
+    const response = {data:{user: "math", token: 123456}}; //Aqui vai a chamada da API
+
+      const {user, token} = response.data
+
+      console.log(user);
 
       localStorage.setItem('@salablack:user',JSON.stringify(user));
       localStorage.setItem('@salablack:token', token);
 
       setData({user, token});
-    }catch(error){
-      if(error.response){
-        alert(error.response.data.message);
-      }else {
-        alert('não foi possível conectar');
-      }
-    }
+
+    // try {
+    //   const response = {data:{user: "math", token: 123456}}; //Aqui vai a chamada da API
+
+    //   const {user, token} = response.data
+
+    //   console.log(user);
+
+    //   localStorage.setItem('@salablack:user',JSON.stringify(user));
+    //   localStorage.setItem('@salablack:token', token);
+
+    //   setData({user, token});
+    // }catch(error){
+    //   if(error.response){
+    //     alert(error.response.data.message);
+    //   }else {
+    //     alert('não foi possível conectar');
+    //   }
+    // }
   }
 
   return (
