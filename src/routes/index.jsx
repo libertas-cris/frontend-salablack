@@ -4,12 +4,12 @@ import { AuthRoutes } from "./auth.routes";
 import { useAuth } from "../hooks/auth";
 
 export function Routes(){
-  const {user} = useAuth()
-  console.log(user);
+  const {token} = useAuth()
+  console.log(token);
 
   return (
     <BrowserRouter>
-    {user ? <AppRoutes /> : <AuthRoutes />}
+    {token ? <AppRoutes /> : <AuthRoutes />}
     </BrowserRouter>
   )
 }

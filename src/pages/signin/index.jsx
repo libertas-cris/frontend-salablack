@@ -1,9 +1,17 @@
 import { useState } from "react"
+import { useAuth } from "../../hooks/auth";
 
 export function SignIn(){
 
   const [email, setEmail] = useState("");
   const[password, setPassword] = useState("");
+  const {signIn} = useAuth();
+
+  function handleSignIn(e) {
+
+    e.preventDefault();
+    signIn({email, password})
+  }
 
 
   return (
@@ -21,7 +29,7 @@ export function SignIn(){
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action="#" method="POST">
+          <form onSubmit={handleSignIn} className="space-y-6" action="#" method="POST">
             <div>
               <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                 E-mail

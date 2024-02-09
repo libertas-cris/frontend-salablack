@@ -1,4 +1,5 @@
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
+import {api} from '../services/api';
 
 export const AuthContext = createContext({});
 
@@ -7,50 +8,51 @@ function AuthProvider({children}){
   const [data, setData] = useState({});
 
   function signOut(){
-    localStorage.removeItem('@salablack:user');
+    // localStorage.removeItem('@salablack:user');
     localStorage.removeItem('@salablack:token'); //entender token como senha criptografada
   
-    setData
+    setData({});
   }
 
-  function signIn({email, password}){
+  async function signIn({email, password}){
 
-    const response = {data:{user: "math", token: 123456}}; //Aqui vai a chamada da API
+    console.log(email);
+    console.log(password);
 
-      const {user, token} = response.data
+    const response = await api.post("/login", {email, password});
 
-      console.log(user);
+    try {
 
-      localStorage.setItem('@salablack:user',JSON.stringify(user));
+      const {token} = response.data
+
+      console.log(token);
+
+      // localStorage.setItem('@salablack:user',JSON.stringify(user));
       localStorage.setItem('@salablack:token', token);
 
-      setData({user, token});
-
-    // try {
-    //   const response = {data:{user: "math", token: 123456}}; //Aqui vai a chamada da API
-
-    //   const {user, token} = response.data
-
-    //   console.log(user);
-
-    //   localStorage.setItem('@salablack:user',JSON.stringify(user));
-    //   localStorage.setItem('@salablack:token', token);
-
-    //   setData({user, token});
-    // }catch(error){
-    //   if(error.response){
-    //     alert(error.response.data.message);
-    //   }else {
-    //     alert('não foi possível conectar');
-    //   }
-    // }
+      setData({token});
+    }catch(error){
+      if(error.response){
+        alert(error.response.data.message);
+      }else {
+        alert('não foi possível conectar');
+      }
+    }
   }
+
+  useEffect(()=> {
+    const token = localStorage.getItem('@salablack:token');
+
+    if(token){
+      setData({token});
+    }
+  }, []);
 
   return (
     <AuthContext.Provider value={{
       signIn,
       signOut,
-      user:data.user
+      token: data.token
     }}>
 
       {children}
