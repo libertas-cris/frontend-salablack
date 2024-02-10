@@ -37,7 +37,7 @@ export function Header (){
                         <a href={link.link} className='text-black  hover:text-red-500 duration-500'>{link.name}</a>
                     </li>))
                 }
-                <button onClick={handleSignOut} className='btn text-red-600 md:ml-8 font-extrabold px-3 py-1 rounded duration-500 md:static'>Sair</button>
+                <button onClick={handleSignOut} className='btn text-red-600 text-sm md:ml-8 font-extrabold px-3 py-1 rounded duration-500 md:static'>Sair</button>
             </ul>
             {/* button */}
            </div>

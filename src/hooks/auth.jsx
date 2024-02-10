@@ -1,6 +1,7 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import {api} from '../services/api';
 
+
 export const AuthContext = createContext({});
 
 
@@ -12,6 +13,7 @@ function AuthProvider({children}){
     localStorage.removeItem('@salablack:token'); //entender token como senha criptografada
   
     setData({});
+
   }
 
   async function signIn({email, password}){
