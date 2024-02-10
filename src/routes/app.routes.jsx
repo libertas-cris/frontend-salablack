@@ -6,7 +6,7 @@ export function AppRoutes(){
   return (
     <Routes>
       <Route path="/" element={<Home />}></Route>
-      <Route path="/tasks" element={<Tasks/>}></Route>
+      <Route path="/tarefas" element={<Tasks/>}></Route>
     </Routes>
   )
 }
