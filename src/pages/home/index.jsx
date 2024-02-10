@@ -1,6 +1,10 @@
-export function Home(){
+import {  Header  } from '../../components/header';
 
-  return (
-    <h1>Hello World</h1>
+export function Home(){
+  return(
+    <div className="app">
+      <Header />
+      <div className="w-full h-screen bg-neutral-900 " />
+    </div>
   )
 }
