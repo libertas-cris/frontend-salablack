@@ -1,5 +1,6 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import {api} from '../services/api';
+import { parse } from "postcss";
 
 
 export const AuthContext = createContext({});
@@ -10,7 +11,8 @@ function AuthProvider({children}){
 
   function signOut(){
     // localStorage.removeItem('@salablack:user');
-    localStorage.removeItem('@salablack:token'); //entender token como senha criptografada
+    localStorage.removeItem('@salablack:token');
+    localStorage.removeItem('@salablack:expires'); 
   
     setData({});
 
@@ -18,37 +20,42 @@ function AuthProvider({children}){
 
   async function signIn({email, password}){
 
-    console.log(email);
-    console.log(password);
-
-    const response = await api.post("/login", {email, password});
-
     try {
+      const response = await api.post("/login", {email, password});
+      const currentTime = new Date().getTime();
+      const {token} = response.data;
 
-      const {token} = response.data
-
-      console.log(token);
-
-      // localStorage.setItem('@salablack:user',JSON.stringify(user));
       localStorage.setItem('@salablack:token', token);
-
+      localStorage.setItem('@salablack:expires', currentTime.toString());
       setData({token});
-    }catch(error){
-      if(error.response){
-        alert(error.response.data.message);
-      }else {
-        alert('não foi possível conectar');
-      }
+    
+    } catch (error) {
+      alert("Usuário ou senha incorretos  ");
     }
   }
+  
 
-  useEffect(()=> {
+  useEffect(() => {
+    const TIMEOUT = 1 * 60 * 1000; 
+  
     const token = localStorage.getItem('@salablack:token');
-
-    if(token){
-      setData({token});
+    const loginTime = parseInt(localStorage.getItem('@salablack:expires'), 10); // Obtenha o tempo de login convertido em milissegundos
+    const currentTime = new Date().getTime();
+  
+    if (token && loginTime) {
+      const elapsedTime = currentTime - loginTime; 
+  
+      if (elapsedTime > TIMEOUT) {
+        alert('Sua sessão expirou! Faça login novamente');
+        localStorage.removeItem('@salablack:expires');
+        localStorage.removeItem('@salablack:token');
+        setData({});
+      } else {
+        setData({token});
+      }
     }
   }, []);
+  
 
   return (
     <AuthContext.Provider value={{
