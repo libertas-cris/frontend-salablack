@@ -36,7 +36,7 @@ function AuthProvider({children}){
   
 
   useEffect(() => {
-    const TIMEOUT = 1 * 60 * 1000; 
+    const TIMEOUT = 60 * 60 * 1000; 
   
     const token = localStorage.getItem('@salablack:token');
     const loginTime = parseInt(localStorage.getItem('@salablack:expires'), 10); // Obtenha o tempo de login convertido em milissegundos
