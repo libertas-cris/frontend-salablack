@@ -3,6 +3,8 @@ import DataTable from 'react-data-table-component';
 import { DATA } from "../../utils/dados";
 import { Header } from "../../components/header";
 
+import * as Dialog from '@radix-ui/react-dialog';
+
 export function Tasks(){
 
   const customStyles = {
@@ -47,6 +49,7 @@ export function Tasks(){
     {
       name: 'Data de Vencimento',
       selector: row => row.dueDate,
+      sortable: true
     },
     {
       name: 'Responsável',
@@ -54,19 +57,26 @@ export function Tasks(){
     },
     {
       name: 'Descrição',
-      selector: row => row.description,
+      cell: row => <Dialog.Root>
+        <Dialog.Trigger className='bg-neutral-200 px-4 py-1 rounded-md flex items-center'>
+            Expandir
+        </Dialog.Trigger>
+        <Dialog.Portal>
+          <Dialog.Overlay className='inset-0 absolute z-10 bg-black/60'/>
+        <Dialog.Content className='absolute z-10 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 max-w-[640px] w-full h-[50vh] bg-slate-100 rounded-md flex flex-col outline-none'>
+            <Dialog.Close className='absolute top-2 right-4'>
+              X
+            </Dialog.Close>
+            <div className='flex flex-1 flex-col p-5'>
+            {row.description}
+              </div>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
     },
     {
       name: 'Status',
       cell: row => <StatusSelector row={row} onUpdate={(id, newStatus) => handleStatusUpdate(id, newStatus)} />,
-      conditionalCellStyles: [
-        {
-          when: row => row.status === 'Feito',
-          style: {
-            backgroundColor: 'green',
-          }      
-        },
-      ]
     }
   ];
 
@@ -86,6 +96,7 @@ export function Tasks(){
       if (item.id === id) {
         return { ...item, status: newStatus };
       }
+      //AQUI VEM A REQUISIÇÃO DE PUT NO BANCO DE DADOS PARA ALTERAR STATUS DA TASK
       return item;
     });
     setData(updatedData);
@@ -100,14 +111,15 @@ export function Tasks(){
         <h1 className="flex text-white font-bold text-2xl rounded-lg self-end ml-7">Checklist de Ações para o Caixa Rápido</h1>
         <div className=''> 
           <DataTable
-            fixedHeader
-            fixedHeaderScrollHeight='25rem'
+          fixedHeader
+            fixedHeaderScrollHeight='400px'
             columns={columns}
             data={data}
             selectableRows
             pagination
             paginationComponentOptions={paginationOptions}
             customStyles={customStyles}
+           
             
           />
         </div>
@@ -126,10 +138,16 @@ const StatusSelector = ({ row, onUpdate }) => {
   };
 
   return (
-    <select value={status} onChange={handleChange}>
-      <option value="A fazer">A fazer</option>
-      <option value="Fazendo">Fazendo</option>
-      <option value="Feito">Feito</option>
+    <select className={`rounded-lg ${
+      status === 'A fazer' ? 'bg-slate-300' :
+      status === 'Fazendo' ? 'bg-cyan-600' :
+      status === 'Feito' ? 'bg-green-600' : ''}`}
+      value={status} onChange={handleChange}
+    >
+      <option className='bg-slate-400' value="A fazer">A fazer</option>
+      <option className='bg-cyan-600' value="Fazendo">Fazendo</option>
+      <option className='bg-green-700' value="Feito">Feito</option>
     </select>
+    
   );
 };
