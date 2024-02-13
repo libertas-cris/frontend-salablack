@@ -9,7 +9,9 @@ export function UsePlatform(){
         Aprenda a usar a nossa plataforma
         < br />
         < br />
-      <YouTube videoId="Cd0rCbHQOVw"/>
+      <YouTube 
+        videoId="Cd0rCbHQOVw"
+        />
     </div>
 
     </div>

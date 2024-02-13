@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { DATA } from "../../utils/dados";
 import { Header } from "../../components/header";
+import { InputFilter } from '../../components/inputFilter'; 
 
 import * as Dialog from '@radix-ui/react-dialog';
 
@@ -109,7 +110,8 @@ export function Tasks(){
       <div className="h-screen grid items-center max-w-[75%] mx-auto rounded-lg">
         
         <h1 className="flex text-white font-bold text-2xl rounded-lg self-end ml-7">Checklist de Ações para o Caixa Rápido</h1>
-        <div className=''> 
+        <div > 
+        <InputFilter />
           <DataTable
           fixedHeader
             fixedHeaderScrollHeight='400px'
@@ -119,8 +121,6 @@ export function Tasks(){
             pagination
             paginationComponentOptions={paginationOptions}
             customStyles={customStyles}
-           
-            
           />
         </div>
       </div>
