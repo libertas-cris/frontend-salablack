@@ -13,6 +13,11 @@ export function Tasks(){
   const [recoveryData, setRecoveryData] = useState(DATA);
 
   const customStyles = {
+    table: {
+      style: {
+        borderRadius: '36px', // Define o raio de arredondamento das bordas da tabela
+      },
+    },
     header: {
       style: {
         minHeight: '56px',
@@ -43,7 +48,16 @@ export function Tasks(){
         },
       },
     },
+    row: {
+      style: {
+        backgroundColor: '#d41e1e', // Define a cor de fundo padrão para todas as linhas
+        '&:nth-child(odd)': {
+          backgroundColor: '#e0e0e0', // Define a cor de fundo para linhas ímpares
+        },
+      },
+    },
   };
+  
 
 
   const columns = [
@@ -130,26 +144,27 @@ export function Tasks(){
 
   }
 
-
   return (
     <div className="">
       <Header />
       <div className="h-screen grid items-center max-w-[75%] mx-auto rounded-lg">
-        <div className='flex justify-between mb-[-350px] items-center'>
+        <div className='flex justify-between mb-[-300px] items-center'>
         <h1 className="flex text-white font-bold text-2xl rounded-lg self-end ml-7">Checklist de Ações para o Caixa Rápido</h1>
         <InputFilter value={activeInputFilter} onChange={(e) => handleFilter(e.target.value)} onClear={handleClearInputFilter}/>
         </div>
-        <div > 
+        <div> 
         
           <DataTable
-          fixedHeader
-            fixedHeaderScrollHeight='400px'
+            fixedHeader
+            fixedHeaderScrollHeight='500px'
             columns={columns}
             data={data}
             selectableRows
             pagination
             paginationComponentOptions={paginationOptions}
             customStyles={customStyles}
+            noDataComponent={<div className='h-[100px] w-[100%] font-bold text-lg flex items-center justify-center shadow-md p-6 rounded-lg'> Nenhuma tarefa para mostrar </div>}
+            highlightOnHover  
           />
         </div>
       </div>
