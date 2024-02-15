@@ -8,6 +8,10 @@ import * as Dialog from '@radix-ui/react-dialog';
 
 export function Tasks(){
 
+  const [activeInputFilter, setActiveInputFilter] = useState('');
+  const [data, setData] = useState(DATA);
+  const [recoveryData, setRecoveryData] = useState(DATA);
+
   const customStyles = {
     header: {
       style: {
@@ -81,8 +85,6 @@ export function Tasks(){
     }
   ];
 
-  const [data, setData] = useState(DATA);
-  console.log(data)
 
   const paginationOptions = {
     rowsPerPageText: 'Tarefas por página',
@@ -103,15 +105,42 @@ export function Tasks(){
     setData(updatedData);
   };
 
+  function handleClearInputFilter(e){
+    setActiveInputFilter('');
+    setData(recoveryData);
+
+  }
+
+  function handleFilter(value) {
+    setActiveInputFilter(value);
+
+    const filteredData = data.filter((item) => {
+      const regex = new RegExp(`.*${value}.*`, 'i');
+    return item.name.match(regex) !== null;
+
+      
+    })
+
+    setData(filteredData);
+
+
+    if(value === ''){
+      setData(recoveryData);
+    }
+
+  }
+
 
   return (
     <div className="">
       <Header />
       <div className="h-screen grid items-center max-w-[75%] mx-auto rounded-lg">
-        
+        <div className='flex justify-between mb-[-350px] items-center'>
         <h1 className="flex text-white font-bold text-2xl rounded-lg self-end ml-7">Checklist de Ações para o Caixa Rápido</h1>
+        <InputFilter value={activeInputFilter} onChange={(e) => handleFilter(e.target.value)} onClear={handleClearInputFilter}/>
+        </div>
         <div > 
-        <InputFilter />
+        
           <DataTable
           fixedHeader
             fixedHeaderScrollHeight='400px'
