@@ -7,6 +7,7 @@ import { ServiceData } from './constants';
 import { FreeMode, Pagination, Navigation } from 'swiper/modules';
 import { FaCircleArrowLeft, FaCircleArrowRight } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
+import { Footer } from '../../components/footer';
 
 export function Home(){
 
@@ -59,6 +60,10 @@ export function Home(){
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
+
+    
   )
 }
