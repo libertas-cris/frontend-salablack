@@ -12,7 +12,7 @@ export const DATA = [
   {"id": 8, "name": "Criar grupo de whatsapp","owner": "Avaliador/Dentista", "dueDate": format(addDays(new Date(), 7), "dd/MM/yyyy"), "description": "criar e adicionar leads no grupo de whatsapp", "status": "A fazer"},
   {"id": 9, "name": "Criar grupo de whatsapp","owner": "Avaliador/Dentista", "dueDate": format(addDays(new Date(), 7), "dd/MM/yyyy"), "description": "criar e adicionar leads no grupo de whatsapp", "status": "A fazer"},
   {"id": 11, "name": "Criar grupo de whatsapp","owner": "Avaliador/Dentista", "dueDate": format(addDays(new Date(), 7), "dd/MM/yyyy"), "description": "criar e adicionar leads no grupo de whatsapp", "status": "A fazer"},
-  {"id": 12, "name": "Criar grupo de whatsapp","owner": "Avaliador/Dentista", "dueDate": format(addDays(new Date(), 7), "dd/MM/yyyy"), "description": "criar e adicionar leads no grupo de whatsapp", "status": "A fazer"},
+  {"id": 12, "name": "Criar grupo de whatsapp","owner": "CRC", "dueDate": format(addDays(new Date(), 7), "dd/MM/yyyy"), "description": "criar e adicionar leads no grupo de whatsapp", "status": "A fazer"},
   {"id": 13, "name": "Criar grupo de whatsapp","owner": "Avaliador/Dentista", "dueDate": format(addDays(new Date(), 7), "dd/MM/yyyy"), "description": "criar e adicionar leads no grupo de whatsapp", "status": "A fazer"},
   {"id": 14, "name": "Criar grupo de whatsapp","owner": "Avaliador/Dentista", "dueDate": format(addDays(new Date(), 7), "dd/MM/yyyy"), "description": "criar e adicionar leads no grupo de whatsapp", "status": "A fazer"},
   {"id": 15, "name": "Criar grupo de whatsapp","owner": "Avaliador/Dentista", "dueDate": format(addDays(new Date(), 7), "dd/MM/yyyy"), "description": "criar e adicionar leads no grupo de whatsapp", "status": "A fazer"},

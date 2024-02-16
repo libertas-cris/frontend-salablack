@@ -11,6 +11,7 @@ export function Tasks(){
   const [activeInputFilter, setActiveInputFilter] = useState('');
   const [data, setData] = useState(DATA);
   const [recoveryData, setRecoveryData] = useState(DATA);
+  const uniqueOwners = Array.from(new Set(recoveryData.map((item => item.owner))))
 
   const customStyles = {
     table: {
@@ -121,14 +122,14 @@ export function Tasks(){
 
   function handleClearInputFilter(e){
     setActiveInputFilter('');
-    setData(recoveryData);
 
   }
 
   function handleFilter(value) {
     setActiveInputFilter(value);
+    setData(recoveryData);
 
-    const filteredData = data.filter((item) => {
+    const filteredData = recoveryData.filter((item) => {
       const regex = new RegExp(`.*${value}.*`, 'i');
     return item.name.match(regex) !== null;
 
@@ -144,19 +145,47 @@ export function Tasks(){
 
   }
 
+  function HandleSelectedFilter() {
+
+    const handleChangeFilter = (e) => {
+      setData(recoveryData);
+
+      const owner = e.target.value;
+      const ownerFiltered = recoveryData.filter((item) => {
+        console.log(owner)
+        return item.owner === owner;
+        
+      })
+
+      setData(ownerFiltered);
+    }
+
+    return (
+    <select className='bg-white px-10 py=2' onChange={handleChangeFilter} defaultValue="">
+       <option value="" hidden disabled>Filtrar por responsável</option>
+    {uniqueOwners.map((owner) => {
+      return <option className='bg-white' key={owner}>{owner}</option>
+
+    })}
+    
+    </select>
+    )
+  }
+
   return (
     <div className="">
       <Header />
       <div className="h-screen grid items-center max-w-[75%] mx-auto rounded-lg">
-        <div className='flex justify-between mb-[-300px] items-center'>
+      <div className='flex justify-between mb-[-10rem] items-center'>
         <h1 className="flex text-white font-bold text-2xl rounded-lg self-end ml-7">Checklist de Ações para o Caixa Rápido</h1>
+        <HandleSelectedFilter />
         <InputFilter value={activeInputFilter} onChange={(e) => handleFilter(e.target.value)} onClear={handleClearInputFilter}/>
         </div>
         <div> 
         
           <DataTable
             fixedHeader
-            fixedHeaderScrollHeight='500px'
+            fixedHeaderScrollHeight='55vh'
             columns={columns}
             data={data}
             selectableRows
@@ -164,7 +193,9 @@ export function Tasks(){
             paginationComponentOptions={paginationOptions}
             customStyles={customStyles}
             noDataComponent={<div className='h-[100px] w-[100%] font-bold text-lg flex items-center justify-center shadow-md p-6 rounded-lg'> Nenhuma tarefa para mostrar </div>}
-            highlightOnHover  
+            highlightOnHover
+            responsive
+            style={{position: "fixed"}}
           />
         </div>
       </div>
