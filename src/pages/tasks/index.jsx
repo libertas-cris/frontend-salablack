@@ -3,11 +3,13 @@ import DataTable from 'react-data-table-component';
 import { DATA } from "../../utils/dados";
 import { Header } from "../../components/header";
 import { InputFilter } from '../../components/inputFilter'; 
+import { IoFilterSharp } from "react-icons/io5";
 
 import * as Dialog from '@radix-ui/react-dialog';
 
 export function Tasks(){
 
+  const [selectedData, setSelectedData] = useState('');
   const [activeInputFilter, setActiveInputFilter] = useState('');
   const [data, setData] = useState(DATA);
   const [recoveryData, setRecoveryData] = useState(DATA);
@@ -132,7 +134,6 @@ export function Tasks(){
     const filteredData = recoveryData.filter((item) => {
       const regex = new RegExp(`.*${value}.*`, 'i');
     return item.name.match(regex) !== null;
-
       
     })
 
@@ -149,6 +150,7 @@ export function Tasks(){
 
     const handleChangeFilter = (e) => {
       setData(recoveryData);
+      setSelectedData(e.target.value);
 
       const owner = e.target.value;
       const ownerFiltered = recoveryData.filter((item) => {
@@ -157,12 +159,18 @@ export function Tasks(){
         
       })
 
+      if(e.target.value === 'Geral'){
+        setData(recoveryData);
+        return;
+      }
+
       setData(ownerFiltered);
     }
 
     return (
-    <select className='bg-white px-10 py=2' onChange={handleChangeFilter} defaultValue="">
-       <option value="" hidden disabled>Filtrar por responsável</option>
+    <select className='bg-white text-black rounded-sm px-2 py-1 text-sm' onChange={handleChangeFilter} value={selectedData}>
+      <option hidden >Filtrar por responsável</option>
+      <option key={'Geral'}>Geral</option>         
     {uniqueOwners.map((owner) => {
       return <option className='bg-white' key={owner}>{owner}</option>
 
@@ -173,16 +181,19 @@ export function Tasks(){
   }
 
   return (
-    <div className="">
+    <div className='h-screen max-w-[75%] mx-auto overflow-hidden'>
       <Header />
-      <div className="h-screen grid items-center max-w-[75%] mx-auto rounded-lg">
-      <div className='flex justify-between mb-[-10rem] items-center'>
-        <h1 className="flex text-white font-bold text-2xl rounded-lg self-end ml-7">Checklist de Ações para o Caixa Rápido</h1>
-        <HandleSelectedFilter />
-        <InputFilter value={activeInputFilter} onChange={(e) => handleFilter(e.target.value)} onClear={handleClearInputFilter}/>
-        </div>
-        <div> 
-        
+
+      <div className="menu text-white mt-32 flex justify-between gap-8 mb-4 items-center">
+        <div className="submenu w-full">
+          <p className='text-2xl'>Checklist de Ações - Caixa Rápido</p>
+          
+          </div>
+          <HandleSelectedFilter />
+          <InputFilter onChange={(e) => handleFilter(e.target.value)} onClear={handleClearInputFilter}/>
+
+
+      </div>
           <DataTable
             fixedHeader
             fixedHeaderScrollHeight='55vh'
@@ -197,9 +208,7 @@ export function Tasks(){
             responsive
             style={{position: "fixed"}}
           />
-        </div>
-      </div>
-    </div>
+          </div>
   );
 }
 

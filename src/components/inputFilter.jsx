@@ -3,9 +3,9 @@ import { GrClearOption } from "react-icons/gr";
 export function InputFilter({onChange, onClear, value}){
 
   return(
-    <form className="flex align-items-center justify-end">
+    <form className="flex items-center text-black bg-white rounded-lg">
       <input
-      className="h-8 w-48 border border-gray-300 px-4 hover:cursor-pointer outline-none mb-2 rounded-bl rounded-tl" 
+      className="h-full px-2 hover:cursor-pointer outline-none mb-2 rounded-bl rounded-tl self-center flex" 
       type="text"
       value={value}
       onChange={onChange}
@@ -14,7 +14,7 @@ export function InputFilter({onChange, onClear, value}){
       />
 
       <button type="button" onClick={onClear}>
-        <GrClearOption size={32} className="bg-rose-600 mb-2 rounded-br rounded-tr"/>
+        <GrClearOption size={30} className="bg-rose-600  rounded-br rounded-tr"/>
       </button>
 
     </form>
