@@ -3,7 +3,7 @@ import DataTable from 'react-data-table-component';
 import { DATA } from "../../utils/dados";
 import { Header } from "../../components/header";
 import { InputFilter } from '../../components/inputFilter'; 
-import { IoFilterSharp } from "react-icons/io5";
+import { Footer } from '../../components/footer';
 
 import * as Dialog from '@radix-ui/react-dialog';
 
@@ -124,6 +124,7 @@ export function Tasks(){
 
   function handleClearInputFilter(e){
     setActiveInputFilter('');
+    setData(recoveryData);
 
   }
 
@@ -181,7 +182,7 @@ export function Tasks(){
   }
 
   return (
-    <div className='h-screen max-w-[75%] mx-auto overflow-hidden'>
+    <div className='h-screen max-w-[85%] mx-auto overflow-hidden'>
       <Header />
 
       <div className="menu text-white mt-32 flex justify-between gap-8 mb-4 items-center">
@@ -190,7 +191,7 @@ export function Tasks(){
           
           </div>
           <HandleSelectedFilter />
-          <InputFilter onChange={(e) => handleFilter(e.target.value)} onClear={handleClearInputFilter}/>
+          <InputFilter value= {activeInputFilter} onChange={(e) => handleFilter(e.target.value)} onClear={handleClearInputFilter}/>
 
 
       </div>
@@ -206,8 +207,9 @@ export function Tasks(){
             noDataComponent={<div className='h-[100px] w-[100%] font-bold text-lg flex items-center justify-center shadow-md p-6 rounded-lg'> Nenhuma tarefa para mostrar </div>}
             highlightOnHover
             responsive
-            style={{position: "fixed"}}
           />
+
+          <Footer />
           </div>
   );
 }

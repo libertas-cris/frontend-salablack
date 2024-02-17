@@ -23,7 +23,7 @@ export function Home(){
     <div className="app">
       <Header />
       <div className="w-full h-screen flex items-center justify-center">
-        <div className="max-w-[36rem] translate-y-[15%]">
+        <div className="max-w-[36rem] translate-y-[7%]">
           <Swiper
             slidesPerView={2}
             spaceBetween={50}
