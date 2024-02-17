@@ -4,6 +4,7 @@ import { DATA } from "../../utils/dados";
 import { Header } from "../../components/header";
 import { InputFilter } from '../../components/inputFilter'; 
 import { Footer } from '../../components/footer';
+import {  format  } from 'date-fns'
 
 import * as Dialog from '@radix-ui/react-dialog';
 
@@ -12,6 +13,7 @@ export function Tasks(){
   const [selectedData, setSelectedData] = useState('');
   const [activeInputFilter, setActiveInputFilter] = useState('');
   const [data, setData] = useState(DATA);
+  const[inputDate, setInputDate] = useState('');
   const [recoveryData, setRecoveryData] = useState(DATA);
   const uniqueOwners = Array.from(new Set(recoveryData.map((item => item.owner))))
 
@@ -181,13 +183,25 @@ export function Tasks(){
     )
   }
 
+  function handleInputChange(e){
+    setInputDate(e.target.value);
+    console.log(new Date(`${e.target.value + 'T00:00:00'}`));
+
+  }
+
   return (
     <div className='h-screen max-w-[85%] mx-auto overflow-hidden'>
       <Header />
 
-      <div className="menu text-white mt-32 flex justify-between gap-8 mb-4 items-center">
-        <div className="submenu w-full">
+      <div className="menu text-white mt-32 flex justify-between gap-8 mb-4 items-end">
+        <div className="submenu w-full flex items-center cursor-pointer justify-between">
           <p className='text-2xl'>Checklist de Ações - Caixa Rápido</p>
+
+          <div className='flex flex-col'>
+            <p>Escolha o dia do seu caixa rápido:</p>
+          <input value={inputDate} onChange={handleInputChange} type='date'className='text-black px-4'></input>
+          </div>
+          
           
           </div>
           <HandleSelectedFilter />
