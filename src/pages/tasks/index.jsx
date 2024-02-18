@@ -184,8 +184,7 @@ export function Tasks(){
   }
 
   function handleInputChange(e){
-    setInputDate(e.target.value);
-    console.log(new Date(`${e.target.value + 'T00:00:00'}`));
+    setInputDate(new Date(`${e.target.value + 'T00:00:00'}`));
 
   }
 
@@ -199,7 +198,7 @@ export function Tasks(){
 
           <div className='flex flex-col'>
             <p>Escolha o dia do seu caixa rápido:</p>
-          <input value={inputDate} onChange={handleInputChange} type='date'className='text-black px-4'></input>
+          <input onChange={handleInputChange} type='date'className='text-black px-4'></input>
           </div>
           
           
