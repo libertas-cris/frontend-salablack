@@ -15,7 +15,7 @@ export function Tasks(){
   const [data, setData] = useState(DATA);
   const[inputDate, setInputDate] = useState('');
   const [recoveryData, setRecoveryData] = useState(DATA);
-  const uniqueOwners = Array.from(new Set(recoveryData.map((item => item.owner))))
+  const uniqueOwners = Array.from(new Set(recoveryData.map((item => item.owner)))).filter(item => item !== "");
 
   const customStyles = {
     table: {
@@ -69,6 +69,12 @@ export function Tasks(){
     {
       name: 'Tarefa',
       selector: row => row.name,
+      wrap: true,
+      grow: 2,
+      style: {
+        wordWrap: 'break-word',
+        padding: '1rem'
+      }
     },
     {
       name: 'Data de Vencimento',
@@ -220,6 +226,7 @@ export function Tasks(){
             noDataComponent={<div className='h-[100px] w-[100%] font-bold text-lg flex items-center justify-center shadow-md p-6 rounded-lg'> Nenhuma tarefa para mostrar </div>}
             highlightOnHover
             responsive
+            contextActions  
           />
 
           <Footer />
