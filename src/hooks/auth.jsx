@@ -31,9 +31,8 @@ function AuthProvider({children}){
       }
 
 
-      localStorage.setItem('@salablack:user', user);
+      localStorage.setItem('@salablack:user', JSON.stringify(user));
       localStorage.setItem('@salablack:expires', currentTime.toString());
-      console.log(user);
       setData(user);
     
     } catch (error) {
