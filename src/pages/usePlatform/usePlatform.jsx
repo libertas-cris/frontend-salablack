@@ -10,7 +10,7 @@ export function UsePlatform(){
         < br />
         < br />
       <YouTube 
-        videoId="Cd0rCbHQOVw"
+        videoId="EkdxIGJ-mOo"
         />
     </div>
 

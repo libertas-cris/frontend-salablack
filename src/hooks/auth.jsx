@@ -9,24 +9,32 @@ function AuthProvider({children}){
   const [data, setData] = useState({});
 
   function signOut(){
-    // localStorage.removeItem('@salablack:user');
-    localStorage.removeItem('@salablack:token');
+    localStorage.removeItem('@salablack:user');
     localStorage.removeItem('@salablack:expires'); 
   
     setData({});
-
   }
 
   async function signIn({email, password}){
 
     try {
-      const response = await api.post("/login", {email, password});
+      const response = await api.get("/users/2");
       const currentTime = new Date().getTime();
-      const {token} = response.data;
+      const {id, email, first_name, last_name, avatar} = response.data.data;
 
-      localStorage.setItem('@salablack:token', token);
+      const user = {
+        id,
+        email,
+        first_name,
+        last_name,
+        avatar
+      }
+
+
+      localStorage.setItem('@salablack:user', user);
       localStorage.setItem('@salablack:expires', currentTime.toString());
-      setData({token});
+      console.log(user);
+      setData(user);
     
     } catch (error) {
       alert("Usuário ou senha incorretos  ");
@@ -37,20 +45,20 @@ function AuthProvider({children}){
   useEffect(() => {
     const TIMEOUT = 60 * 60 * 1000; 
   
-    const token = localStorage.getItem('@salablack:token');
+    const user = localStorage.getItem('@salablack:user');
     const loginTime = parseInt(localStorage.getItem('@salablack:expires'), 10); // Obtenha o tempo de login convertido em milissegundos
     const currentTime = new Date().getTime();
   
-    if (token && loginTime) {
+    if (user && loginTime) {
       const elapsedTime = currentTime - loginTime; 
   
       if (elapsedTime > TIMEOUT) {
         alert('Sua sessão expirou! Faça login novamente');
         localStorage.removeItem('@salablack:expires');
-        localStorage.removeItem('@salablack:token');
+        localStorage.removeItem('@salablack:user');
         setData({});
       } else {
-        setData({token});
+        setData({user});
       }
     }
   }, []);
@@ -60,7 +68,7 @@ function AuthProvider({children}){
     <AuthContext.Provider value={{
       signIn,
       signOut,
-      token: data.token
+      user: data
     }}>
 
       {children}
