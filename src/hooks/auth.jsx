@@ -30,15 +30,16 @@ function AuthProvider({children}){
         avatar
       }
 
-
       localStorage.setItem('@salablack:user', JSON.stringify(user));
       localStorage.setItem('@salablack:expires', currentTime.toString());
+
       setData(user);
-    
+   
     } catch (error) {
       alert("Usuário ou senha incorretos  ");
     }
   }
+
   
 
   useEffect(() => {
@@ -57,7 +58,7 @@ function AuthProvider({children}){
         localStorage.removeItem('@salablack:user');
         setData({});
       } else {
-        setData({user});
+        setData(JSON.parse(user));
       }
     }
   }, []);

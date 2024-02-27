@@ -4,9 +4,10 @@ import { DATA } from "../../utils/dados";
 import { Header } from "../../components/header";
 import { InputFilter } from '../../components/inputFilter'; 
 import { Footer } from '../../components/footer';
-import {  format  } from 'date-fns'
+import YouTube from 'react-youtube';
 
 import * as Dialog from '@radix-ui/react-dialog';
+import { useAuth } from '../../hooks/auth';
 
 export function Tasks(){
 
@@ -16,6 +17,8 @@ export function Tasks(){
   const[inputDate, setInputDate] = useState('');
   const [recoveryData, setRecoveryData] = useState(DATA);
   const uniqueOwners = Array.from(new Set(recoveryData.map((item => item.owner)))).filter(item => item !== "");
+
+  const {user} = useAuth();
 
   const customStyles = {
     table: {
@@ -69,8 +72,7 @@ export function Tasks(){
     {
       name: 'Tarefa',
       selector: row => row.name,
-      wrap: true,
-      grow: 2,
+      wrap: true, 
       style: {
         wordWrap: 'break-word',
         padding: '1rem'
@@ -97,8 +99,9 @@ export function Tasks(){
             <Dialog.Close className='absolute top-2 right-4'>
               X
             </Dialog.Close>
-            <div className='flex flex-1 flex-col p-5'>
-            {row.description}
+            <div className='h-screen flex flex-1 flex-col items-center justify-center p-5 overflow-hidden'>
+            <img className='object-contain w-full min-h-80 flex self-center' src="https://dentistapower.com.br/wp-content/uploads/2023/08/BG_INVESTIMENTO-577x1024.webp" alt="" />
+            {row.id}
               </div>
           </Dialog.Content>
         </Dialog.Portal>
@@ -122,9 +125,11 @@ export function Tasks(){
   const handleStatusUpdate = (id, newStatus) => {
     const updatedData = data.map(item => {
       if (item.id === id) {
+        console.log(item);
         return { ...item, status: newStatus };
+        
       }
-      //AQUI VEM A REQUISIÇÃO DE PUT NO BANCO DE DADOS PARA ALTERAR STATUS DA TASK
+            //AQUI VEM A REQUISIÇÃO DE PUT NO BANCO DE DADOS PARA ALTERAR STATUS DA TASK
       return item;
     });
     setData(updatedData);
