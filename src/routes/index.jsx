@@ -2,15 +2,25 @@ import { BrowserRouter } from "react-router-dom";
 import { AppRoutes } from "./app.routes";
 import { AuthRoutes } from "./auth.routes";
 import { useAuth } from "../hooks/auth";
-import { AdminRoutes } from "./admin.routes";
+import { decodeToken, isExpired } from 'react-jwt';
 
 export function Routes(){
-  const {user} = useAuth()
+  const {token} = useAuth();
+  const decodedToken = decodeToken(token);
+  const isExpiredToken = isExpired(token);
+
+  if(decodedToken){
+    const userID = decodedToken.sub;
+    console.log(userID);
+  } else {
+    console.error('Token inválido ou ausente');
+  }
+
 
   return (
     <BrowserRouter>
     {
-     user.id ? <AppRoutes /> : 
+     (!isExpiredToken) ? <AppRoutes /> : 
     <AuthRoutes />}
     </BrowserRouter>
   )

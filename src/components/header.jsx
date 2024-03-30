@@ -7,7 +7,7 @@ export function Header (){
     let Links =[
         {name:"Início",link:"/"},
         {name:"Plataforma",link:"/tutorial"},
-        {name:"Ajuda",link:"/"},
+        {name:"Ajuda",link:"/teste"},
       ];
       let [open, setOpen] =useState(false);
 

@@ -9,8 +9,7 @@ function AuthProvider({children}){
   const [data, setData] = useState({});
 
   function signOut(){
-    localStorage.removeItem('@salablack:user');
-    localStorage.removeItem('@salablack:expires'); 
+    localStorage.removeItem('@salablack:token');
   
     setData({});
   }
@@ -18,22 +17,16 @@ function AuthProvider({children}){
   async function signIn({email, password}){
 
     try {
-      const response = await api.get("/users/2");
-      const currentTime = new Date().getTime();
-      const {id, email, first_name, last_name, avatar} = response.data.data;
+      const response = await api.post("/login", {email, password});
+      const {user, token} = response.data;
 
-      const user = {
-        id,
-        email,
-        first_name,
-        last_name,
-        avatar
-      }
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      setData({token});
 
-      localStorage.setItem('@salablack:user', JSON.stringify(user));
-      localStorage.setItem('@salablack:expires', currentTime.toString());
+      localStorage.setItem('@salablack:token', token);
 
-      setData(user);
+      console.log(data);
+
    
     } catch (error) {
       alert("Usuário ou senha incorretos  ");
@@ -43,23 +36,16 @@ function AuthProvider({children}){
   
 
   useEffect(() => {
-    const TIMEOUT = 60 * 60 * 1000; 
+    const token = localStorage.getItem('@salablack:token');
+
   
-    const user = localStorage.getItem('@salablack:user');
-    const loginTime = parseInt(localStorage.getItem('@salablack:expires'), 10); // Obtenha o tempo de login convertido em milissegundos
-    const currentTime = new Date().getTime();
-  
-    if (user && loginTime) {
-      const elapsedTime = currentTime - loginTime; 
-  
-      if (elapsedTime > TIMEOUT) {
-        alert('Sua sessão expirou! Faça login novamente');
-        localStorage.removeItem('@salablack:expires');
-        localStorage.removeItem('@salablack:user');
-        setData({});
-      } else {
-        setData(JSON.parse(user));
-      }
+    if(token) {
+
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      
+      setData({
+        token,
+      })
     }
   }, []);
   
@@ -68,7 +54,7 @@ function AuthProvider({children}){
     <AuthContext.Provider value={{
       signIn,
       signOut,
-      user: data
+      token: data.token
     }}>
 
       {children}
