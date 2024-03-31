@@ -1,24 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
-import { DATA } from "../../utils/dados";
 import { Header } from "../../components/header";
 import { InputFilter } from '../../components/inputFilter'; 
 import { Footer } from '../../components/footer';
-import YouTube from 'react-youtube';
+import { decodeToken } from 'react-jwt';
+import { format, subDays, startOfDay, isBefore, addDays } from 'date-fns';
+import { api } from '../../services/api';
 
 import * as Dialog from '@radix-ui/react-dialog';
-import { useAuth } from '../../hooks/auth';
 
 export function Tasks(){
 
   const [selectedData, setSelectedData] = useState('');
   const [activeInputFilter, setActiveInputFilter] = useState('');
-  const [data, setData] = useState(DATA);
+  const [data, setData] = useState([]);
   const[inputDate, setInputDate] = useState('');
-  const [recoveryData, setRecoveryData] = useState(DATA);
-  const uniqueOwners = Array.from(new Set(recoveryData.map((item => item.owner)))).filter(item => item !== "");
+  const [uniqueOwners, setUniqueOwners] = useState([]);
+  const [recoveryData, setRecoveryData] = useState([]);
+  
 
-  const {user} = useAuth();
+  const token = localStorage.getItem('@salablack:token');
+
+  const user_id = decodeToken(token).sub;
 
   const customStyles = {
     table: {
@@ -71,7 +74,7 @@ export function Tasks(){
   const columns = [
     {
       name: 'Tarefa',
-      selector: row => row.name,
+      selector: row => row.title,
       wrap: true, 
       style: {
         wordWrap: 'break-word',
@@ -80,7 +83,7 @@ export function Tasks(){
     },
     {
       name: 'Data de Vencimento',
-      selector: row => row.dueDate,
+      selector: row => format(subDays(inputDate, row.daysControl), 'dd/MM/yyyy'),
       sortable: true
     },
     {
@@ -100,8 +103,7 @@ export function Tasks(){
               X
             </Dialog.Close>
             <div className='h-screen flex flex-1 flex-col items-center justify-center p-5 overflow-hidden'>
-            <img className='object-contain w-full min-h-80 flex self-center' src="https://dentistapower.com.br/wp-content/uploads/2023/08/BG_INVESTIMENTO-577x1024.webp" alt="" />
-            {row.id}
+            {row.description}
               </div>
           </Dialog.Content>
         </Dialog.Portal>
@@ -109,7 +111,23 @@ export function Tasks(){
     },
     {
       name: 'Status',
-      cell: row => <StatusSelector row={row} onUpdate={(id, newStatus) => handleStatusUpdate(id, newStatus)} />,
+      cell: row => {
+        const getStatusText = (status) => {
+          switch (status) {
+            case 0:
+              return 'A fazer';
+            case 1:
+              return 'Fazendo';
+            case 2:
+              return 'Feito';
+            default:
+              return '';
+          }
+        };
+        
+        const statusText = getStatusText(row.status);
+        return <StatusSelector row={row} onUpdate={(id, newStatus) => handleStatusUpdate(id, newStatus)} statusText={statusText} />;
+      },
     }
   ];
 
@@ -122,17 +140,15 @@ export function Tasks(){
     paginationRowsPerPageOptions: [5, 10, 20, 50]
   }
 
-  const handleStatusUpdate = (id, newStatus) => {
-    const updatedData = data.map(item => {
+  const handleStatusUpdate = async(id, newStatus) => {
+    const updatedData = data.map( async item => {
       if (item.id === id) {
-        console.log(item);
-        return { ...item, status: newStatus };
-        
-      }
-            //AQUI VEM A REQUISIÇÃO DE PUT NO BANCO DE DADOS PARA ALTERAR STATUS DA TASK
+        await api.put(`/task/update/${user_id}/${id}/${newStatus === 'A fazer' ? 0 : newStatus === 'Fazendo' ? 1:2}`)
+        return { ...item, status: newStatus }; 
+      }  
       return item;
     });
-    setData(updatedData);
+    setData(await Promise.all(updatedData));
   };
 
   function handleClearInputFilter(e){
@@ -147,7 +163,7 @@ export function Tasks(){
 
     const filteredData = recoveryData.filter((item) => {
       const regex = new RegExp(`.*${value}.*`, 'i');
-    return item.name.match(regex) !== null;
+    return item.title.match(regex) !== null;
       
     })
 
@@ -194,10 +210,37 @@ export function Tasks(){
     )
   }
 
-  function handleInputChange(e){
-    setInputDate(new Date(`${e.target.value + 'T00:00:00'}`));
+  async function handleInputChange(e){
+    if(isBefore(new Date(`${e.target.value + 'T00:00:00'}`), new Date())){
+      alert('Não é possível selecionar datas passadas');
+      return
+    }
 
+    setInputDate(new Date(`${e.target.value + 'T00:00:00'}`).toISOString());
+    const formattedDate = new Date(`${e.target.value + 'T00:00:00'}`).toISOString();
+
+    await api.put('/user/update/event', {id:user_id, eventDate:formattedDate});
   }
+
+  useEffect(() => {
+    const getUserTasks = async () => {
+      const tasks = await (await api.get(`/tasks/${user_id}`)).data;
+      setData(tasks);
+      setRecoveryData(tasks);
+      console.log(tasks);
+  
+      const owners = Array.from(new Set(recoveryData.map((item => item.owner)))).filter(item => item !== "");
+      setUniqueOwners(owners);
+    }
+
+    getUserTasks()
+    console.log(inputDate);
+
+    if(inputDate == ''){
+      setInputDate(addDays(startOfDay(new Date()), 15));
+    }
+
+  }, [])
 
   return (
     
@@ -240,8 +283,8 @@ export function Tasks(){
   );
 }
 
-const StatusSelector = ({ row, onUpdate }) => {
-  const [status, setStatus] = useState(row.status);
+const StatusSelector = ({ row, onUpdate, statusText}) => {
+  const [status, setStatus] = useState(statusText);
 
   const handleChange = (e) => {
     const newStatus = e.target.value;
@@ -254,7 +297,8 @@ const StatusSelector = ({ row, onUpdate }) => {
       status === 'A fazer' ? 'bg-slate-300' :
       status === 'Fazendo' ? 'bg-cyan-600' :
       status === 'Feito' ? 'bg-green-600' : ''}`}
-      value={status} onChange={handleChange}
+      value={status} 
+      onChange={handleChange}
     >
       <option className='bg-slate-400' value="A fazer">A fazer</option>
       <option className='bg-cyan-600' value="Fazendo">Fazendo</option>
