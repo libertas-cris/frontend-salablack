@@ -8,6 +8,7 @@ import { format, subDays, startOfDay, isBefore, addDays } from 'date-fns';
 import { api } from '../../services/api';
 
 import * as Dialog from '@radix-ui/react-dialog';
+import { toast } from 'sonner';
 
 export function Tasks(){
 
@@ -144,6 +145,7 @@ export function Tasks(){
     const updatedData = data.map( async item => {
       if (item.id === id) {
         await api.put(`/task/update/${user_id}/${id}/${newStatus === 'A fazer' ? 0 : newStatus === 'Fazendo' ? 1:2}`)
+        toast.success('Status da tarefa atualizado');
         return { ...item, status: newStatus }; 
       }  
       return item;
@@ -220,6 +222,7 @@ export function Tasks(){
     const formattedDate = new Date(`${e.target.value + 'T00:00:00'}`).toISOString();
 
     await api.put('/user/update/event', {id:user_id, eventDate:formattedDate});
+    toast.success('A data do seu caixa rápido foi atualizada');
   }
 
   useEffect(() => {

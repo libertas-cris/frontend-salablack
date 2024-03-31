@@ -1,5 +1,7 @@
 import { useState } from "react"
 import { useAuth } from "../../hooks/auth";
+import { Link } from "react-router-dom";
+import { toast } from "sonner";
 
 
 
@@ -91,9 +93,9 @@ export function SignIn(){
 
           <p className="mt-10 text-center text-sm text-gray-500">
             Não tem uma conta?{' '}
-            <a href="#" className="font-semibold leading-6 text-red-600 hover:text-red-500">
-              Crie uma conta
-            </a>
+            <Link to='/cadastrar' className="font-semibold leading-6 text-red-600 hover:text-red-500">
+              Criar conta
+            </Link>
           </p>
         </div>
       </div>

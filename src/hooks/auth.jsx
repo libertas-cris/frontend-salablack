@@ -1,5 +1,6 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import {api} from '../services/api';
+import { toast } from "sonner";
 
 
 export const AuthContext = createContext({});
@@ -29,7 +30,7 @@ function AuthProvider({children}){
 
    
     } catch (error) {
-      alert("Usuário ou senha incorretos  ");
+      toast.error('E-mail ou senha incorreto');
     }
   }
 
