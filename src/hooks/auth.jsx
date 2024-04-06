@@ -1,6 +1,7 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import {api} from '../services/api';
 import { toast } from "sonner";
+import { useNavigate } from 'react-router-dom'
 
 
 export const AuthContext = createContext({});
@@ -9,10 +10,21 @@ export const AuthContext = createContext({});
 function AuthProvider({children}){
   const [data, setData] = useState({});
 
+
   function signOut(){
     localStorage.removeItem('@salablack:token');
   
     setData({});
+  }
+
+  async function signUp ({name, email, password, phone}) {
+    try {
+      const response = await api.post('/user',{name, email, password, phone});
+      toast.success('Usuário criado com sucesso');
+
+    } catch (error){
+      console.error(error.message);
+    }
   }
 
   async function signIn({email, password}){
@@ -52,6 +64,7 @@ function AuthProvider({children}){
     <AuthContext.Provider value={{
       signIn,
       signOut,
+      signUp,
       token: data.token
     }}>
 

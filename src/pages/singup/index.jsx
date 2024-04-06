@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useAuth } from "../../hooks/auth";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
+import { useNavigate } from 'react-router-dom';
 
 
 export function SignUp() {
@@ -10,10 +11,11 @@ export function SignUp() {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState('');
-  const { signIn } = useAuth();
+  const { signUp } = useAuth();
+  const navigate = useNavigate()
 
 
-  async function handleSignIn(e) {
+  async function handleSignUp(e) {
 
     e.preventDefault();
 
@@ -22,8 +24,9 @@ export function SignUp() {
       return
     }
 
-    const isLogged = await signIn({ email, password, confirmPassword })
+    const isLogged = await signUp({ name, email, password, phone })
     if (isLogged) {
+      navigate('/');
 
     }
   }
@@ -44,7 +47,7 @@ export function SignUp() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form onSubmit={handleSignIn} className="space-y-6" action="#" method="POST">
+          <form onSubmit={handleSignUp} className="space-y-6" action="#" method="POST">
             <div>
               <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                 E-mail
