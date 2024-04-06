@@ -21,6 +21,7 @@ function AuthProvider({children}){
     try {
       const response = await api.post('/user',{name, email, password, phone});
       toast.success('Usuário criado com sucesso');
+      return true;
 
     } catch (error){
       console.error(error.message);

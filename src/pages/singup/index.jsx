@@ -2,17 +2,16 @@ import { useState } from "react"
 import { useAuth } from "../../hooks/auth";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
-import { useNavigate } from 'react-router-dom';
 
 
-export function SignUp() {
+
+export function SignUp({navigate}) {
 
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState('');
   const { signUp } = useAuth();
-  const navigate = useNavigate()
 
 
   async function handleSignUp(e) {
@@ -26,6 +25,7 @@ export function SignUp() {
 
     const isLogged = await signUp({ name, email, password, phone })
     if (isLogged) {
+      console.log('entrei');
       navigate('/');
 
     }
