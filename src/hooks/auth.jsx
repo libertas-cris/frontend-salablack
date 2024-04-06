@@ -26,15 +26,12 @@ function AuthProvider({children}){
 
       localStorage.setItem('@salablack:token', token);
 
-      console.log(data);
-
+      toast.success('Seja bem vindo(a)');
    
     } catch (error) {
       toast.error('E-mail ou senha incorreto');
     }
   }
-
-  
 
   useEffect(() => {
     const token = localStorage.getItem('@salablack:token');
