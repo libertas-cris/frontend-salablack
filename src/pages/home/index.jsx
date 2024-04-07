@@ -23,9 +23,9 @@ export function Home(){
     <div className="app">
       <Header />
       <div className="w-full h-screen flex items-center justify-center">
-        <div className="max-w-[36rem] translate-y-[7%]">
+        <div className="max-w-[56rem] translate-y-[7%]">
           <Swiper
-            slidesPerView={2}
+            slidesPerView={3}
             spaceBetween={50}
             freeMode={true}
             pagination={{

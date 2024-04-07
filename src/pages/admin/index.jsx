@@ -7,7 +7,13 @@ import { useParams } from 'react-router-dom';
 
 export function Admin(){
 
-  const params = useParams();
+  const paginationOptions = {
+    rowsPerPageText: 'Tarefas por página',
+    rangeSeparatorText: 'de',
+    selectAllRowsItem: true,
+    selectAllRowsItemText: 'Todos',
+    paginationRowsPerPageOptions: [5, 10, 20, 50]
+  }
 
   const [data, setData] = useState([]);
 
@@ -57,21 +63,17 @@ export function Admin(){
   }, []);
 
   return(
-    <div className='h-screen max-w-[85%] mx-auto overflow-hidden'>
+    <div  className='h-screen  max-w-[85%] flex flex-col justify-center mx-auto overflow-hidden'>
       <Header />
 
-
-
-    <div className='mt-96'>
       <DataTable 
       columns={columns}
       data={data}
       noDataComponent={<div className='h-[100px] w-[100%] font-bold text-lg flex items-center justify-center shadow-md p-6 rounded-lg'> Nenhuma tarefa para mostrar </div>}
+      pagination
+      paginationComponentOptions={paginationOptions}
       />
-      <Footer />
-      </div>
-
-      
+      <Footer />      
     </div>
   )
 }
