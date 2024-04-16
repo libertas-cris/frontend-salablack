@@ -12,11 +12,8 @@ import { Footer } from '../../components/footer';
 export function Home(){
 
   function handleHome(cardTitle){
-    console.log(cardTitle);
 
-    if(cardTitle === "Caixa Rápido"){
-      // Navegação para a rota "/tasks"
-    }
+    return cardTitle;
   }
 
   return(
