@@ -146,7 +146,7 @@ export function Tasks() {
   const handleStatusUpdate = async (id, newStatus) => {
     const updatedData = data.map(async item => {
       if (item.id === id) {
-        await api.put(`/task/update/${user_id}/${id}/${newStatus === 'A fazer' ? 0 : newStatus === 'Fazendo' ? 1 : 2}`)
+        await api.patch(`/task/update/${user_id}/${id}/${newStatus === 'A fazer' ? 0 : newStatus === 'Fazendo' ? 1 : 2}`)
         toast.success('Status da tarefa atualizado');
         return { ...item, status: newStatus };
       }
