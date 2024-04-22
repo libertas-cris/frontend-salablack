@@ -7,7 +7,7 @@ import { Admin } from "../pages/admin";
 export function AppRoutes(){
 
   return (
-    <Routes>
+    <Routes >
       <Route path="/" element={<Home />}></Route>
       <Route path="/tarefas" element={<Tasks/>}></Route>
       <Route path="/tutorial" element={<UsePlatform/>}></Route>
