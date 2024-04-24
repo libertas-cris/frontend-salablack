@@ -11,7 +11,6 @@ export function Routes(){
 
   if(decodedToken){
     const userID = decodedToken.sub;
-    console.log(userID);
   } else {
     console.error('Token inválido ou ausente');
   }
