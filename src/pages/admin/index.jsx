@@ -3,7 +3,7 @@ import { Header } from "../../components/header"
 import { Footer } from '../../components/footer';
 import { api } from '../../services/api';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { ColorRing } from 'react-loader-spinner'
 
 export function Admin(){
 
@@ -16,6 +16,7 @@ export function Admin(){
   }
 
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const columns = [
     {
@@ -61,6 +62,20 @@ export function Admin(){
     getAllUsers();
 
   }, []);
+
+  if (isLoading) {
+    return <div className='flex  h-screen justify-center place-items-center'>
+      <ColorRing
+        visible={true}
+        height="80"
+        width="80"
+        ariaLabel="color-ring-loading"
+        wrapperStyle={{}}
+        wrapperClass="color-ring-wrapper"
+        colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+      />
+    </div>
+  }
 
   return(
     <div  className='h-screen  max-w-[85%] flex flex-col justify-center mx-auto overflow-hidden'>
