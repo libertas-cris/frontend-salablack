@@ -8,13 +8,19 @@ import { FreeMode, Pagination, Navigation } from 'swiper/modules';
 import { FaCircleArrowLeft, FaCircleArrowRight } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
 import { Footer } from '../../components/footer';
+import { useEffect, useState } from 'react';
 
 export function Home(){
+  const [isLoading, setIsLoading] = useState(false);
 
   function handleHome(cardTitle){
 
     return cardTitle;
   }
+
+  useEffect(()=> {
+
+  }, [])
 
   return(
     <div className="app">

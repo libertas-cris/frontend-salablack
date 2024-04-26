@@ -5,7 +5,7 @@ import { api } from '../../services/api';
 import { useEffect, useState } from 'react';
 import { ColorRing } from 'react-loader-spinner'
 
-export function Admin(){
+export function Admin() {
 
   const paginationOptions = {
     rowsPerPageText: 'Tarefas por página',
@@ -22,7 +22,7 @@ export function Admin(){
     {
       name: 'Aluno',
       selector: row => row.name,
-      wrap: true, 
+      wrap: true,
       style: {
         wordWrap: 'break-word',
         padding: '1rem'
@@ -33,32 +33,41 @@ export function Admin(){
       name: 'Email',
       selector: row => row.email
     },
-    
+
     {
       name: 'Ativo',
-      cell: row => <input 
-      type="checkbox" 
-      defaultChecked={row.is_Active} 
-      onChange={(event) => handleCheckboxChange(event, row.id)}
-      
+      cell: row => <input
+        type="checkbox"
+        defaultChecked={row.is_Active}
+        onChange={(event) => handleCheckboxChange(event, row.id)}
+
       />
     }
   ]
 
-  async function handleCheckboxChange(event, rowId){
+  async function handleCheckboxChange(event, rowId) {
     const isChecked = event.target.checked;
 
     await api.put(`/user/update/${rowId}/${isChecked}`);
 
   }
 
-  async function getAllUsers(){
-    const users = (await api.get('/users')).data
-    setData(users);
-    
-  }
-
   useEffect(() => {
+    const getAllUsers = async () => {
+      try {
+        setIsLoading(true);
+        const users = (await api.get('/users')).data
+        setData(users);
+
+        setIsLoading(false)
+      } catch (error) {
+        console.error('Erro ao carregar os dados de usuários', error);
+
+
+      }
+
+    }
+
     getAllUsers();
 
   }, []);
@@ -77,18 +86,25 @@ export function Admin(){
     </div>
   }
 
-  return(
-    <div  className='h-screen  max-w-[85%] flex flex-col justify-center mx-auto overflow-hidden'>
+  return (
+    <div>
       <Header />
 
-      <DataTable 
-      columns={columns}
-      data={data}
-      noDataComponent={<div className='h-[100px] w-[100%] font-bold text-lg flex items-center justify-center shadow-md p-6 rounded-lg'> Nenhuma tarefa para mostrar </div>}
-      pagination
-      paginationComponentOptions={paginationOptions}
+      <div className='h-screen i place-content-center px-36'>
+      <DataTable
+        title="Usuários Cadastrados"
+        columns={columns}
+        data={data}
+        noDataComponent={<div className='h-[100px] w-[100%] font-bold text-lg flex items-center justify-center shadow-md p-6 rounded-lg'> Nenhuma tarefa para mostrar </div>}
+        pagination
+        paginationPerPage={5}
+        paginationComponentOptions={paginationOptions}
+        fixedHeader
+        highlightOnHover
       />
-      <Footer />      
+      </div>
+      <Footer />
     </div>
+
   )
 }
