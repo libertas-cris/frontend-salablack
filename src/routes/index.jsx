@@ -13,6 +13,7 @@ export function Routes() {
 
   useEffect(() => {
     const decodedToken = decodeToken(token);
+    console.log(decodedToken.email)
     if (decodedToken) {
       if (Admins.includes(decodedToken.email)) {
         setIsAdmin(true);
