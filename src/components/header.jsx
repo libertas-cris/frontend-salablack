@@ -14,7 +14,6 @@ export function Header() {
         const decodedToken = decodeToken(token);
         if (decodedToken && Admins.includes(decodedToken.email)) {
             setIsAdmin(true);
-            console.log('admin')
         }
     }, [token]);
 
