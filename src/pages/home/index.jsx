@@ -28,7 +28,7 @@ export function Home(){
       <div className="w-full h-screen flex items-center justify-center">
         <div className="max-w-[56rem] translate-y-[7%]">
           <Swiper
-            slidesPerView={3}
+            slidesPerView={2}
             spaceBetween={50}
             freeMode={true}
             pagination={{
