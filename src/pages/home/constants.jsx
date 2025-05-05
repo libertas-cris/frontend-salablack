@@ -6,12 +6,6 @@ export const ServiceData = [
     image: "https://raw.githubusercontent.com/libertas-cris/arquivos-salablack/main/1.png"
   },
   {
-    title: "Hall dos Anúncios",
-    content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    route: "/hall",
-    image: "https://raw.githubusercontent.com/libertas-cris/arquivos-salablack/main/2.png"
-  },
-  {
     title: "Como usar a plataforma",
     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     route: "/tutorial",
